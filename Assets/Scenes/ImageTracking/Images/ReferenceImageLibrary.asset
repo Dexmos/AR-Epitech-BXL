@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
+  m_Name: ReferenceImageLibrary
+  m_EditorClassIdentifier: 
+  m_GuidLow: 5438900029218683827
+  m_GuidHigh: 11338665651040755373
+  m_Images:
+  - m_SerializedGuid:
+      m_GuidLow: 5109939222002339543
+      m_GuidHigh: 5934400222564477091
+    m_SerializedTextureGuid:
+      m_GuidLow: 10593690263894456772
+      m_GuidHigh: 17418650348633735577
+    m_Size: {x: 0.035818715, y: 0.05}
+    m_SpecifySize: 1
+    m_Name: Dracaufeu_ex
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5398721136943135969
+      m_GuidHigh: 15650003646235679641
+    m_SerializedTextureGuid:
+      m_GuidLow: 5887399329199491203
+      m_GuidHigh: 8965463946934958536
+    m_Size: {x: 0.5, y: 0.72240806}
+    m_SpecifySize: 1
+    m_Name: Jayce
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5193234627106063701
+      m_GuidHigh: 5750785225204822413
+    m_SerializedTextureGuid:
+      m_GuidLow: 288924497207985411
+      m_GuidHigh: 4143232447317295274
+    m_Size: {x: 0.5, y: 0.5}
+    m_SpecifySize: 1
+    m_Name: QRCode
+    m_Texture: {fileID: 0}
