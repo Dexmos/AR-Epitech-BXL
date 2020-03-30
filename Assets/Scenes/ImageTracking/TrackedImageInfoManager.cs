@@ -16,6 +16,12 @@ public class TrackedImageInfoManager : MonoBehaviour
     [Tooltip("The camera to set on the world space UI canvas for each instantiated image info.")]
     Camera m_WorldSpaceCanvasCamera;
 
+    [SerializeField]
+    public GameObject Test_Sphere = default;
+    [SerializeField]
+    public Text test_text = default;
+    private bool hasSphere = false;
+
     /// <summary>
     /// The prefab has a world space UI canvas,
     /// which requires a camera to function properly.
@@ -75,6 +81,22 @@ public class TrackedImageInfoManager : MonoBehaviour
 
         var planeParentGo = trackedImage.transform.GetChild(0).gameObject;
         var planeGo = planeParentGo.transform.GetChild(0).gameObject;
+
+        if (trackedImage.referenceImage.name.Equals("Jayce"))
+        {
+            test_text.text = "Jayce Found";
+            if (!hasSphere)
+            {
+                GameObject test = Instantiate(Test_Sphere, planeParentGo.transform.position, Quaternion.identity);
+
+                //test.transform.localScale = new Vector3(4.0f, 4.0f, 4.0f);
+                hasSphere = true;
+            }
+        }
+        else
+        {
+            test_text.text = "Jayce Not Found";
+        }
 
         // Disable the visual plane if it is not being tracked
         if (trackedImage.trackingState != TrackingState.None)
