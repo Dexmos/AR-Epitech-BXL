@@ -89,7 +89,7 @@ public class TrackedImageInfoManager : MonoBehaviour
             {
                 GameObject test = Instantiate(Test_Sphere, planeParentGo.transform.position, Quaternion.identity);
 
-                //test.transform.localScale = new Vector3(4.0f, 4.0f, 4.0f);
+                test.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
                 hasSphere = true;
             }
         }
@@ -101,14 +101,21 @@ public class TrackedImageInfoManager : MonoBehaviour
         // Disable the visual plane if it is not being tracked
         if (trackedImage.trackingState != TrackingState.None)
         {
-            planeGo.SetActive(true);
+            if (trackedImage.referenceImage.name.Equals("Jayce"))
+            {
+                planeParentGo.SetActive(false);
+                planeGo.SetActive(false);
+            }
+            else
+            {
+                planeGo.SetActive(true);
+                // The image extents is only valid when the image is being tracked
+                trackedImage.transform.localScale = new Vector3(trackedImage.size.x, 1f, trackedImage.size.y);
 
-            // The image extents is only valid when the image is being tracked
-            trackedImage.transform.localScale = new Vector3(trackedImage.size.x, 1f, trackedImage.size.y);
-
-            // Set the texture
-            var material = planeGo.GetComponentInChildren<MeshRenderer>().material;
-            material.mainTexture = (trackedImage.referenceImage.texture == null) ? defaultTexture : trackedImage.referenceImage.texture;
+                // Set the texture
+                var material = planeGo.GetComponentInChildren<MeshRenderer>().material;
+                material.mainTexture = (trackedImage.referenceImage.texture == null) ? defaultTexture : trackedImage.referenceImage.texture;
+            }
         }
         else
         {
