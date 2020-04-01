@@ -16,6 +16,12 @@ public class TrackedImageInfoManager : MonoBehaviour
     [Tooltip("The camera to set on the world space UI canvas for each instantiated image info.")]
     Camera m_WorldSpaceCanvasCamera;
 
+    [SerializeField]
+    public GameObject Test_Sphere = default;
+    [SerializeField]
+    public Text test_text = default;
+    private bool hasSphere = false;
+
     /// <summary>
     /// The prefab has a world space UI canvas,
     /// which requires a camera to function properly.
@@ -76,17 +82,40 @@ public class TrackedImageInfoManager : MonoBehaviour
         var planeParentGo = trackedImage.transform.GetChild(0).gameObject;
         var planeGo = planeParentGo.transform.GetChild(0).gameObject;
 
+        if (trackedImage.referenceImage.name.Equals("Jayce"))
+        {
+            test_text.text = "Jayce Found";
+            if (!hasSphere)
+            {
+                GameObject test = Instantiate(Test_Sphere, planeParentGo.transform.position, Quaternion.identity);
+
+                test.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                hasSphere = true;
+            }
+        }
+        else
+        {
+            test_text.text = "Jayce Not Found";
+        }
+
         // Disable the visual plane if it is not being tracked
         if (trackedImage.trackingState != TrackingState.None)
         {
-            planeGo.SetActive(true);
+            if (trackedImage.referenceImage.name.Equals("Jayce"))
+            {
+                planeParentGo.SetActive(false);
+                planeGo.SetActive(false);
+            }
+            else
+            {
+                planeGo.SetActive(true);
+                // The image extents is only valid when the image is being tracked
+                trackedImage.transform.localScale = new Vector3(trackedImage.size.x, 1f, trackedImage.size.y);
 
-            // The image extents is only valid when the image is being tracked
-            trackedImage.transform.localScale = new Vector3(trackedImage.size.x, 1f, trackedImage.size.y);
-
-            // Set the texture
-            var material = planeGo.GetComponentInChildren<MeshRenderer>().material;
-            material.mainTexture = (trackedImage.referenceImage.texture == null) ? defaultTexture : trackedImage.referenceImage.texture;
+                // Set the texture
+                var material = planeGo.GetComponentInChildren<MeshRenderer>().material;
+                material.mainTexture = (trackedImage.referenceImage.texture == null) ? defaultTexture : trackedImage.referenceImage.texture;
+            }
         }
         else
         {
