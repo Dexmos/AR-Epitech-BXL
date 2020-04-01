@@ -90,6 +90,7 @@ public class TrackedImageInfoManager : MonoBehaviour
                 GameObject test = Instantiate(Test_Sphere, planeParentGo.transform.position, Quaternion.identity);
 
                 test.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                test.isStatic = true;
                 hasSphere = true;
             }
         }
