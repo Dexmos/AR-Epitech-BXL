@@ -17,10 +17,9 @@ public class TrackedImageInfoManager : MonoBehaviour
     Camera m_WorldSpaceCanvasCamera;
 
     [SerializeField]
-    public GameObject Test_Sphere = default;
-    [SerializeField]
-    public Text test_text = default;
-    private bool hasSphere = false;
+    public Text TestText = default;
+
+    private bool canSetGame = false;
 
     /// <summary>
     /// The prefab has a world space UI canvas,
@@ -66,62 +65,47 @@ public class TrackedImageInfoManager : MonoBehaviour
     void UpdateInfo(ARTrackedImage trackedImage)
     {
         // Set canvas camera
-        var canvas = trackedImage.GetComponentInChildren<Canvas>();
-        canvas.worldCamera = worldSpaceCanvasCamera;
+        //var canvas = trackedImage.GetComponentInChildren<Canvas>();
+        //canvas.worldCamera = worldSpaceCanvasCamera;
 
         // Update information about the tracked image
-        var text = canvas.GetComponentInChildren<Text>();
+        /*var text = canvas.GetComponentInChildren<Text>();
         text.text = string.Format(
             "{0}\ntrackingState: {1}\nGUID: {2}\nReference size: {3} cm\nDetected size: {4} cm",
             trackedImage.referenceImage.name,
             trackedImage.trackingState,
             trackedImage.referenceImage.guid,
             trackedImage.referenceImage.size * 100f,
-            trackedImage.size * 100f);
+            trackedImage.size * 100f);*/
 
-        var planeParentGo = trackedImage.transform.GetChild(0).gameObject;
-        var planeGo = planeParentGo.transform.GetChild(0).gameObject;
+        //var planeParentGo = trackedImage.transform.GetChild(0).gameObject;
+        //var planeGo = planeParentGo.transform.GetChild(0).gameObject;
 
         if (trackedImage.referenceImage.name.Equals("Jayce"))
         {
-            test_text.text = "Jayce Found";
-            if (!hasSphere)
-            {
-                GameObject test = Instantiate(Test_Sphere, planeParentGo.transform.position, Quaternion.identity);
-
-                test.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                test.isStatic = true;
-                hasSphere = true;
-            }
+            TestText.text = "Jayce Found";
+            canSetGame = true;
         }
         else
         {
-            test_text.text = "Jayce Not Found";
+            TestText.text = "Jayce Not Found";
         }
 
         // Disable the visual plane if it is not being tracked
-        if (trackedImage.trackingState != TrackingState.None)
+        /*if (trackedImage.trackingState != TrackingState.None)
         {
-            if (trackedImage.referenceImage.name.Equals("Jayce"))
-            {
-                planeParentGo.SetActive(false);
-                planeGo.SetActive(false);
-            }
-            else
-            {
-                planeGo.SetActive(true);
-                // The image extents is only valid when the image is being tracked
-                trackedImage.transform.localScale = new Vector3(trackedImage.size.x, 1f, trackedImage.size.y);
+            planeGo.SetActive(true);
+            // The image extents is only valid when the image is being tracked
+            trackedImage.transform.localScale = new Vector3(trackedImage.size.x, 1f, trackedImage.size.y);
 
-                // Set the texture
-                var material = planeGo.GetComponentInChildren<MeshRenderer>().material;
-                material.mainTexture = (trackedImage.referenceImage.texture == null) ? defaultTexture : trackedImage.referenceImage.texture;
-            }
+            // Set the texture
+            var material = planeGo.GetComponentInChildren<MeshRenderer>().material;
+            material.mainTexture = (trackedImage.referenceImage.texture == null) ? defaultTexture : trackedImage.referenceImage.texture;
         }
         else
         {
             planeGo.SetActive(false);
-        }
+        }*/
     }
 
     void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
@@ -136,5 +120,10 @@ public class TrackedImageInfoManager : MonoBehaviour
 
         foreach (var trackedImage in eventArgs.updated)
             UpdateInfo(trackedImage);
+    }
+
+    public bool CanSetUpGame()
+    {
+        return (canSetGame);
     }
 }
