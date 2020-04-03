@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.XR.ARFoundation;
@@ -17,9 +18,15 @@ public class TrackedImageInfoManager : MonoBehaviour
     Camera m_WorldSpaceCanvasCamera;
 
     [SerializeField]
-    public Text TestText = default;
+    public TextMeshProUGUI MainText = default;
+    [SerializeField]
+    public TextMeshProUGUI TempText = default;
 
+    public float TimeTempTextApear = 2.0f;
+    private float time = 0.0f;
+    private bool launchTempText = false;
     private bool canSetGame = false;
+    private bool gameAlreadySetUp = false;
 
     /// <summary>
     /// The prefab has a world space UI canvas,
@@ -62,50 +69,38 @@ public class TrackedImageInfoManager : MonoBehaviour
         m_TrackedImageManager.trackedImagesChanged -= OnTrackedImagesChanged;
     }
 
+    private void Update()
+    {
+       if (launchTempText)
+        {
+            if (time >= TimeTempTextApear)
+            {
+                launchTempText = false;
+                time = 0.0f;
+                TempText.gameObject.SetActive(false);
+            }
+            time += Time.deltaTime;
+        }
+    }
+
     void UpdateInfo(ARTrackedImage trackedImage)
     {
-        // Set canvas camera
-        //var canvas = trackedImage.GetComponentInChildren<Canvas>();
-        //canvas.worldCamera = worldSpaceCanvasCamera;
-
-        // Update information about the tracked image
-        /*var text = canvas.GetComponentInChildren<Text>();
-        text.text = string.Format(
-            "{0}\ntrackingState: {1}\nGUID: {2}\nReference size: {3} cm\nDetected size: {4} cm",
-            trackedImage.referenceImage.name,
-            trackedImage.trackingState,
-            trackedImage.referenceImage.guid,
-            trackedImage.referenceImage.size * 100f,
-            trackedImage.size * 100f);*/
-
-        //var planeParentGo = trackedImage.transform.GetChild(0).gameObject;
-        //var planeGo = planeParentGo.transform.GetChild(0).gameObject;
-
-        if (trackedImage.referenceImage.name.Equals("Jayce"))
+        if (trackedImage.referenceImage.name.Equals("Charizard_EX"))
         {
-            TestText.text = "Jayce Found";
+            MainText.text = "Charizard Found";
+            if (!gameAlreadySetUp)
+            {
+                canSetGame = true;
+            }
+        }
+        if (trackedImage.referenceImage.name.Equals("Jayce") && !gameAlreadySetUp)
+        {
+            TempText.gameObject.SetActive(true);
+            launchTempText = true;
+            time = 0.0f;
+            TempText.text = "Nah it's Jayce !";
             canSetGame = true;
         }
-        else
-        {
-            TestText.text = "Jayce Not Found";
-        }
-
-        // Disable the visual plane if it is not being tracked
-        /*if (trackedImage.trackingState != TrackingState.None)
-        {
-            planeGo.SetActive(true);
-            // The image extents is only valid when the image is being tracked
-            trackedImage.transform.localScale = new Vector3(trackedImage.size.x, 1f, trackedImage.size.y);
-
-            // Set the texture
-            var material = planeGo.GetComponentInChildren<MeshRenderer>().material;
-            material.mainTexture = (trackedImage.referenceImage.texture == null) ? defaultTexture : trackedImage.referenceImage.texture;
-        }
-        else
-        {
-            planeGo.SetActive(false);
-        }*/
     }
 
     void OnTrackedImagesChanged(ARTrackedImagesChangedEventArgs eventArgs)
@@ -125,5 +120,14 @@ public class TrackedImageInfoManager : MonoBehaviour
     public bool CanSetUpGame()
     {
         return (canSetGame);
+    }
+
+    public void ChangeSetUpGame(bool status)
+    {
+        canSetGame = status;
+        if (!status)
+        {
+            gameAlreadySetUp = true;
+        }
     }
 }

@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System.Collections;
+using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
@@ -19,6 +22,12 @@ public class PlaceOnPlane : MonoBehaviour
 
     [SerializeField]
     public TrackedImageInfoManager ImageTrackerManager = default;
+
+    [SerializeField]
+    public Button SettingsButton = default;
+
+    private bool changePosGameObject = false;
+    private bool hasAlreadyClickedToChangePosition = false;
 
     /// <summary>
     /// The prefab to instantiate on touch.
@@ -62,17 +71,17 @@ public class PlaceOnPlane : MonoBehaviour
 
     void Update()
     {
-        if (!TryGetTouchPosition(out Vector2 touchPosition))
-            return;
-
-        if (m_RaycastManager.Raycast(touchPosition, s_Hits, TrackableType.PlaneWithinPolygon))
+        if (ImageTrackerManager.CanSetUpGame() || changePosGameObject)
         {
-            // Raycast hits are sorted by distance, so the first one
-            // will be the closest hit.
-            var hitPose = s_Hits[0].pose;
+            if (!TryGetTouchPosition(out Vector2 touchPosition))
+                return;
 
-            if (ImageTrackerManager.CanSetUpGame())
+            if (m_RaycastManager.Raycast(touchPosition, s_Hits, TrackableType.PlaneWithinPolygon))
             {
+                // Raycast hits are sorted by distance, so the first one
+                // will be the closest hit.
+                var hitPose = s_Hits[0].pose;
+
                 PlaceObject(hitPose);
             }
         }
@@ -85,11 +94,32 @@ public class PlaceOnPlane : MonoBehaviour
             spawnedObject = Instantiate(m_PlacedPrefab, hitPose.position, hitPose.rotation);
             spawnedObject.transform.localScale = new Vector3(2.5f, 2.5f, 2.5f);
             spawnedObject.transform.localEulerAngles = new Vector3(-90.0f, 0.0f, 0.0f);
+            SettingsButton.gameObject.SetActive(true);
+            ImageTrackerManager.ChangeSetUpGame(false);
         }
         else
         {
-            spawnedObject.transform.position = hitPose.position;
+            if (hasAlreadyClickedToChangePosition)
+            {
+                spawnedObject.transform.position = hitPose.position;
+            }
+            hasAlreadyClickedToChangePosition = true;
         }
+    }
+
+    /// <summary>
+    /// Call by button in scene
+    /// </summary>
+    public void SetChangePosGameObject(bool status)
+    {
+        changePosGameObject = status;
+        hasAlreadyClickedToChangePosition = false;
+    }
+
+
+    public GameObject GetSpawedObject()
+    {
+        return (spawnedObject);
     }
 
     static List<ARRaycastHit> s_Hits = new List<ARRaycastHit>();
