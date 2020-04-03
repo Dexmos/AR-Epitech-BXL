@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.XR.ARFoundation;
 
 public class SpawnSettingsMenu : MonoBehaviour
 {
@@ -24,7 +25,14 @@ public class SpawnSettingsMenu : MonoBehaviour
     [SerializeField]
     public Button ChangeAHoopScaleButton = default;
 
+    [Space(5f)]
+    [SerializeField]
+    public GameManager GameManagerScript = default;
+    [SerializeField]
+    public ARPlaneManager ARPlaneManagerScript = default;
+
     private bool currentAdjustButtonsStatus = false;
+    private GameObject[] findedARPlanes = default;
 
     /// <summary>
     /// Call by Button in scene
@@ -33,10 +41,12 @@ public class SpawnSettingsMenu : MonoBehaviour
     {
         if (!currentMainButtonsStatus)
         {
+            GameManagerScript.SetLaunchGameButtonStatus(false);
             ManageButtons(true);
         }
         else
         {
+            GameManagerScript.SetLaunchGameButtonStatus(true);
             ManageButtons(false);
         }
     }
@@ -71,4 +81,15 @@ public class SpawnSettingsMenu : MonoBehaviour
         ChangeAHoopScaleButton.gameObject.SetActive(status);
         currentAdjustButtonsStatus = status;
     }
+
+    /*public void EnablePlaneManagerScript()
+    {
+        ARPlaneManagerScript.enabled = true;
+        findedARPlanes = GameManagerScript.GetAllPlanes();
+
+        for (int i = 0; findedARPlanes[i] != null; i++)
+        {
+            findedARPlanes[i].SetActive(false);
+        }
+    }*/
 }

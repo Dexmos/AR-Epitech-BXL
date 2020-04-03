@@ -22,6 +22,8 @@ public class PlaceOnPlane : MonoBehaviour
 
     [SerializeField]
     public TrackedImageInfoManager ImageTrackerManager = default;
+    [SerializeField]
+    public GameManager GameManagerScript = default;
 
     [SerializeField]
     public Button SettingsButton = default;
@@ -96,6 +98,7 @@ public class PlaceOnPlane : MonoBehaviour
             spawnedObject.transform.localEulerAngles = new Vector3(-90.0f, 0.0f, 0.0f);
             SettingsButton.gameObject.SetActive(true);
             ImageTrackerManager.ChangeSetUpGame(false);
+            GameManagerScript.SetLaunchGameButtonStatus(true);
         }
         else
         {

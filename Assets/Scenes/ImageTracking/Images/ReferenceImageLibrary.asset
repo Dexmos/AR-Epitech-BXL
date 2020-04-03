@@ -35,13 +35,3 @@ MonoBehaviour:
     m_SpecifySize: 1
     m_Name: Jayce
     m_Texture: {fileID: 0}
-  - m_SerializedGuid:
-      m_GuidLow: 5193234627106063701
-      m_GuidHigh: 5750785225204822413
-    m_SerializedTextureGuid:
-      m_GuidLow: 288924497207985411
-      m_GuidHigh: 4143232447317295274
-    m_Size: {x: 0.5, y: 0.5}
-    m_SpecifySize: 1
-    m_Name: QRCode
-    m_Texture: {fileID: 0}
