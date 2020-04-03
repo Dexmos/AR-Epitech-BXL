@@ -35,7 +35,7 @@ public class BasketHoopSettings : MonoBehaviour
             gameObjectToChange = PlaceOnPlaneScript.GetSpawedObject();
             newRotation.x = gameObjectToChange.transform.localRotation.x;
             newRotation.y = gameObjectToChange.transform.localRotation.y;
-            newRotation.z = gameObjectToChange.transform.localRotation.z + Slider.value;
+            newRotation.z = (gameObjectToChange.transform.localRotation.z + Slider.value) * -1.0f;
             gameObjectToChange.transform.localEulerAngles = new Vector3(-90.0f, newRotation.y, newRotation.z);
         }
     }
