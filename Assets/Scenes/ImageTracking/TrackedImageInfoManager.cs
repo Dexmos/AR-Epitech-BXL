@@ -99,7 +99,6 @@ public class TrackedImageInfoManager : MonoBehaviour
             launchTempText = true;
             time = 0.0f;
             TempText.text = "Nah it's Jayce !";
-            canSetGame = true;
         }
     }
 

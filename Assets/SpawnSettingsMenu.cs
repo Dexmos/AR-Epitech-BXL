@@ -24,9 +24,6 @@ public class SpawnSettingsMenu : MonoBehaviour
     [SerializeField]
     public Button ChangeAHoopScaleButton = default;
 
-    [SerializeField]
-    public TextMeshProUGUI Text = default;
-
     private bool currentAdjustButtonsStatus = false;
 
     /// <summary>
@@ -34,8 +31,6 @@ public class SpawnSettingsMenu : MonoBehaviour
     /// </summary>
     public void OnClickSettingsButton()
     {
-        Text.text = currentMainButtonsStatus.ToString();
-
         if (!currentMainButtonsStatus)
         {
             ManageButtons(true);
