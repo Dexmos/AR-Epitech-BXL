@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class MyButtonScript : Button
 {
     private GameManager GameManagerScript = default;
+    private TextMeshProUGUI MainText = default;
 
     public override void OnPointerDown(PointerEventData eventData)
     {
@@ -16,11 +18,18 @@ public class MyButtonScript : Button
     {
         base.OnPointerUp(eventData);
         Debug.Log("Up");
-        GameManagerScript.SetLaunchGameButtonStatus(true);
+        MainText.text = "Set LaunchGameButton to true";
+        //GameManagerScript.SetLaunchGameButtonStatus(true);
+        GameManagerScript.StartGame();
     }
 
     public void SetGameManager(GameManager newGameManager)
     {
         GameManagerScript = newGameManager;
+    }
+
+    public void SetTMProtext(TextMeshProUGUI text)
+    {
+        MainText = text;
     }
 }

@@ -15,8 +15,6 @@ public class SpawnSettingsMenu : MonoBehaviour
     [SerializeField]
     public GameObject ChangeBallButton = default;
 
-    private bool currentMainButtonsStatus = false;
-
     [Header("Adjust Hoop Buttons")]
     [SerializeField]
     public Button ChangeAHoopPositionButton = default;
@@ -30,24 +28,29 @@ public class SpawnSettingsMenu : MonoBehaviour
     public GameManager GameManagerScript = default;
     [SerializeField]
     public ARPlaneManager ARPlaneManagerScript = default;
+    [SerializeField]
+    public TextMeshProUGUI MainText = default;
 
     private bool currentAdjustButtonsStatus = false;
-    private GameObject[] findedARPlanes = default;
+    private bool currentMainButtonsStatus = false;
 
     /// <summary>
     /// Call by Button in scene
     /// </summary>
     public void OnClickSettingsButton()
     {
+        MainText.text = currentAdjustButtonsStatus.ToString();
         if (!currentMainButtonsStatus)
         {
             GameManagerScript.SetLaunchGameButtonStatus(false);
             ManageButtons(true);
+            ManageAdjustHoopButtons(false);
         }
         else
         {
             GameManagerScript.SetLaunchGameButtonStatus(true);
             ManageButtons(false);
+            ManageAdjustHoopButtons(true);
         }
     }
 
@@ -59,10 +62,12 @@ public class SpawnSettingsMenu : MonoBehaviour
         if (!currentAdjustButtonsStatus)
         {
             ManageAdjustHoopButtons(true);
+            ManageButtons(false);
         }
         else
         {
             ManageAdjustHoopButtons(false);
+            ManageButtons(true);
         }
     }
 
@@ -81,15 +86,4 @@ public class SpawnSettingsMenu : MonoBehaviour
         ChangeAHoopScaleButton.gameObject.SetActive(status);
         currentAdjustButtonsStatus = status;
     }
-
-    /*public void EnablePlaneManagerScript()
-    {
-        ARPlaneManagerScript.enabled = true;
-        findedARPlanes = GameManagerScript.GetAllPlanes();
-
-        for (int i = 0; findedARPlanes[i] != null; i++)
-        {
-            findedARPlanes[i].SetActive(false);
-        }
-    }*/
 }

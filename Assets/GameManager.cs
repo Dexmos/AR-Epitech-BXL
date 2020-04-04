@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public ARSessionOrigin ARSessionOriginScript = default;
     [SerializeField]
     public ARPlaneManager ARPlaneManagerScript = default;
+    [SerializeField]
+    public PlaceBallOnPlane PlaceBallOnPlaneScript = default;
 
     [SerializeField]
     public TextMeshProUGUI MainText = default;
@@ -28,59 +30,63 @@ public class GameManager : MonoBehaviour
     public Vector3 PositionToInstantiateBalls = Vector3.zero;
 
     private GameObject currentBall = default;
-    public GameObject[] ARPlanes = default;
 
     private void Start()
     {
         LaunchGameMyButtonScript.SetGameManager(this);
     }
 
-    private void Update()
+    public void StartGame()
     {
-        if (currentBall)
+        SetLaunchGameButtonStatus(false);
+        if (currentBall != null)
         {
-            MainText.text = currentBall.transform.position.ToString();
+            Invoke("CallThrowBall", 2.0f);
         }
+    }
+
+    private void CallThrowBall()
+    {
+        currentBall.GetComponent<SwipeScript>().ThrowBall(true);
     }
 
     public void SetLaunchGameButtonStatus(bool status)
     {
         LaunchGameButton.gameObject.SetActive(status);
-        if (status)
+
+        // Make UI bug
+        /*if (status)
         {
-            MainText.text = "GameReady";
+            MainText.text = "Place Ball";
             if (currentBall == null)
             {
-                currentBall = Instantiate(BallPrefab);
-                currentBall.GetComponent<SwipeScript>().SetCamera(MainCamera);
-                //ARSessionOriginScript.MakeContentAppearAt(currentBall.transform, PositionToInstantiateBalls);
-                //DisablePlaneManagerScript();
+                //currentBall = Instantiate(BallPrefab);
+                //PlaceBallOnPlaneScript.SetPlaceBall(true);
+                //currentBall = PlaceBallOnPlaneScript.PlaceBall();
+                //PlaceBallOnPlaneScript.PlaceBall();
+                //LaunchGameButton.gameObject.SetActive(false);
             }
-            currentBall.transform.position = MainCamera.transform.position + MainCamera.transform.forward * 2.5f + MainCamera.transform.up * -0.5f;
-        }
-        else
-        {
-            MainText.text = "GameNotReady";
-            if (currentBall != null)
-            {
-                Destroy(currentBall);
-            }
-        }
+            //if (currentBall != null)
+            //{
+              //  currentBall.GetComponent<SwipeScript>().SetCamera(MainCamera);
+               // currentBall.transform.position = MainCamera.transform.position + MainCamera.transform.forward * 2.5f + MainCamera.transform.up * -0.5f;
+            //}
+        }*/
     }
 
-    /*private void DisablePlaneManagerScript()
+    public void SetPlaceBall()
     {
-        ARPlaneManagerScript.enabled = false;
-        ARPlanes = GameObject.FindGameObjectsWithTag("ARPlane");
-
-        for(int i = 0; ARPlanes[i] != null; i++)
-        {
-            ARPlanes[i].SetActive(false);
-        }
+        MainText.text = "Place Ball";
+        PlaceBallOnPlaneScript.SetPlaceBall(true);
     }
 
-    public GameObject[] GetAllPlanes()
+    public void SetBallPlacedOnPlan(GameObject ball)
     {
-        return (ARPlanes);
-    }*/
+        MainText.text = "Set currentBall";
+        currentBall = ball;
+        currentBall.GetComponent<SwipeScript>().SetCamera(MainCamera);
+        currentBall.GetComponent<SwipeScript>().SetText(MainText);
+        SetLaunchGameButtonStatus(true);
+        LaunchGameMyButtonScript.SetTMProtext(MainText);
+    }
 }

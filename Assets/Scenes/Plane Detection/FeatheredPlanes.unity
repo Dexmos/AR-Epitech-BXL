@@ -737,6 +737,7 @@ MonoBehaviour:
   ChangeAHoopScaleButton: {fileID: 2125536065}
   GameManagerScript: {fileID: 1511244254}
   ARPlaneManagerScript: {fileID: 1335839537}
+  MainText: {fileID: 2125536064}
 --- !u!1 &1298989882 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5799034852189104948, guid: 4b7f54afed50cee4c9ae68042d980cfd,
@@ -770,6 +771,7 @@ GameObject:
   - component: {fileID: 1335839536}
   - component: {fileID: 1335839540}
   - component: {fileID: 1335839539}
+  - component: {fileID: 1335839541}
   m_Layer: 0
   m_Name: AR Session Origin
   m_TagString: Untagged
@@ -882,6 +884,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa17d122634046b4a8e23048891fafc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1335839541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335839533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6378b049caa6a2744805b6960405e4e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PlacedPrefab: {fileID: 1626935738664246, guid: 1cfd3354999796840bde10affa3c1f10,
+    type: 3}
+  GameManagerScript: {fileID: 1511244254}
+  MainText: {fileID: 2125536064}
 --- !u!1 &1458809629
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,14 +980,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ARSessionOriginScript: {fileID: 1335839534}
   ARPlaneManagerScript: {fileID: 1335839537}
+  PlaceBallOnPlaneScript: {fileID: 1335839541}
   MainText: {fileID: 2125536064}
-  LaunchGameButton: {fileID: 2125536068}
+  LaunchGameButton: {fileID: 1035645923}
   LaunchGameMyButtonScript: {fileID: 1035645923}
   MainCanvas: {fileID: 1704903286}
   BallPrefab: {fileID: 1626935738664246, guid: 1cfd3354999796840bde10affa3c1f10, type: 3}
   MainCamera: {fileID: 282840813}
   PositionToInstantiateBalls: {x: 0, y: -1, z: 2.5}
-  ARPlanes: []
+--- !u!1 &1680110240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1680110241}
+  m_Layer: 0
+  m_Name: Original
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1680110241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680110240}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.8393455, y: 4.1170826, z: -0.12502289}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!223 &1704903286 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 3559382406161540128, guid: 4b7f54afed50cee4c9ae68042d980cfd,
@@ -1357,6 +1405,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[6].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536726227783992806, guid: 4b7f54afed50cee4c9ae68042d980cfd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3559382406161540131, guid: 4b7f54afed50cee4c9ae68042d980cfd,
         type: 3}
@@ -1858,7 +1911,8 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6283805249938041183, guid: 4b7f54afed50cee4c9ae68042d980cfd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4b7f54afed50cee4c9ae68042d980cfd, type: 3}
 --- !u!1 &2125536060 stripped
 GameObject:
@@ -1934,18 +1988,6 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2125536068 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6283805249938041183, guid: 4b7f54afed50cee4c9ae68042d980cfd,
-    type: 3}
-  m_PrefabInstance: {fileID: 2125536059}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1035645922}
-  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 

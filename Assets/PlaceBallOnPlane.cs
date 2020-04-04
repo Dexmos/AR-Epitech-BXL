@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Collections;
@@ -14,20 +14,20 @@ using UnityEngine.XR.ARSubsystems;
 /// and moved to the hit position.
 /// </summary>
 [RequireComponent(typeof(ARRaycastManager))]
-public class PlaceOnPlane : MonoBehaviour
+public class PlaceBallOnPlane : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("Instantiates this prefab on a plane at the touch location.")]
     GameObject m_PlacedPrefab;
 
     [SerializeField]
-    public TrackedImageInfoManager ImageTrackerManager = default;
-    [SerializeField]
     public GameManager GameManagerScript = default;
 
     [SerializeField]
-    public Button SettingsButton = default;
+    public TextMeshProUGUI MainText = default;
 
+    private bool canPlaceBall = false;
+    private bool canStartPlaceBall = false;
     private bool changePosGameObject = false;
     private bool hasAlreadyClickedToChangePosition = false;
 
@@ -65,20 +65,27 @@ public class PlaceOnPlane : MonoBehaviour
             touchPosition = Input.GetTouch(0).position;
             return true;
         }
+
+        if (Input.touchCount == 0)
+        {
+            if (canPlaceBall)
+                canStartPlaceBall = true;
+        }
 #endif
 
         touchPosition = default;
         return false;
     }
 
-    void Update()
+    public void Update()
     {
-        if (ImageTrackerManager.CanSetUpGame() || changePosGameObject)
+        if (canPlaceBall || changePosGameObject)
         {
+            MainText.text = "Enter Loop1"  + canPlaceBall.ToString();
             if (!TryGetTouchPosition(out Vector2 touchPosition))
                 return;
 
-            if (m_RaycastManager.Raycast(touchPosition, s_Hits, TrackableType.PlaneWithinPolygon))
+            if (m_RaycastManager.Raycast(touchPosition, s_Hits, TrackableType.PlaneWithinPolygon) && canStartPlaceBall)
             {
                 // Raycast hits are sorted by distance, so the first one
                 // will be the closest hit.
@@ -94,12 +101,10 @@ public class PlaceOnPlane : MonoBehaviour
         if (spawnedObject == null)
         {
             spawnedObject = Instantiate(m_PlacedPrefab, hitPose.position, hitPose.rotation);
-            spawnedObject.transform.localScale = new Vector3(2.5f, 2.5f, 2.5f);
-            spawnedObject.transform.localEulerAngles = new Vector3(-90.0f, 0.0f, 0.0f);
-            SettingsButton.gameObject.SetActive(true);
-            ImageTrackerManager.ChangeSetUpGame(false);
+            GameManagerScript.SetBallPlacedOnPlan(spawnedObject);
+            canPlaceBall = false;
+            canStartPlaceBall = false;
             //GameManagerScript.SetLaunchGameButtonStatus(true);
-            GameManagerScript.SetPlaceBall();
         }
         else
         {
@@ -114,10 +119,19 @@ public class PlaceOnPlane : MonoBehaviour
     /// <summary>
     /// Call by button in scene
     /// </summary>
-    public void SetChangePosGameObject(bool status)
+    /*public void SetChangePosGameObject(bool status)
     {
         changePosGameObject = status;
         hasAlreadyClickedToChangePosition = false;
+    }*/
+
+    /// <summary>
+    /// Called by button
+    /// </summary>
+    /// <param name="status"></param>
+    public void SetPlaceBall(bool status)
+    {
+        canPlaceBall = status;
     }
 
 
