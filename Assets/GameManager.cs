@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public ARPlaneManager ARPlaneManagerScript = default;
     [SerializeField]
+    public ARRaycastManager ARRaycastManagerScript = default;
+    [SerializeField]
     public PlaceBallOnPlane PlaceBallOnPlaneScript = default;
 
     [SerializeField]
@@ -86,6 +88,8 @@ public class GameManager : MonoBehaviour
         currentBall = ball;
         currentBall.GetComponent<SwipeScript>().SetCamera(MainCamera);
         currentBall.GetComponent<SwipeScript>().SetText(MainText);
+        currentBall.GetComponent<SwipeScript>().SetARRaycastManager(ARRaycastManagerScript);
+
         SetLaunchGameButtonStatus(true);
         LaunchGameMyButtonScript.SetTMProtext(MainText);
     }

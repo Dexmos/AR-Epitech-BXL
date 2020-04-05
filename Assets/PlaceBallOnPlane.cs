@@ -101,6 +101,7 @@ public class PlaceBallOnPlane : MonoBehaviour
         if (spawnedObject == null)
         {
             spawnedObject = Instantiate(m_PlacedPrefab, hitPose.position, hitPose.rotation);
+            spawnedObject.transform.position = new Vector3(hitPose.position.x, hitPose.position.y + 1.0f, hitPose.position.z);
             GameManagerScript.SetBallPlacedOnPlan(spawnedObject);
             canPlaceBall = false;
             canStartPlaceBall = false;

@@ -980,6 +980,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ARSessionOriginScript: {fileID: 1335839534}
   ARPlaneManagerScript: {fileID: 1335839537}
+  ARRaycastManagerScript: {fileID: 1335839540}
   PlaceBallOnPlaneScript: {fileID: 1335839541}
   MainText: {fileID: 2125536064}
   LaunchGameButton: {fileID: 1035645923}
