@@ -81,7 +81,6 @@ public class PlaceBallOnPlane : MonoBehaviour
     {
         if (canPlaceBall || changePosGameObject)
         {
-            MainText.text = "Enter Loop1"  + canPlaceBall.ToString();
             if (!TryGetTouchPosition(out Vector2 touchPosition))
                 return;
 
@@ -101,7 +100,7 @@ public class PlaceBallOnPlane : MonoBehaviour
         if (spawnedObject == null)
         {
             spawnedObject = Instantiate(m_PlacedPrefab, hitPose.position, hitPose.rotation);
-            spawnedObject.transform.position = new Vector3(hitPose.position.x, hitPose.position.y + 1.0f, hitPose.position.z);
+            spawnedObject.transform.position = new Vector3(hitPose.position.x, hitPose.position.y + 0.1f, hitPose.position.z);
             GameManagerScript.SetBallPlacedOnPlan(spawnedObject);
             canPlaceBall = false;
             canStartPlaceBall = false;
@@ -116,15 +115,6 @@ public class PlaceBallOnPlane : MonoBehaviour
             hasAlreadyClickedToChangePosition = true;
         }
     }
-
-    /// <summary>
-    /// Call by button in scene
-    /// </summary>
-    /*public void SetChangePosGameObject(bool status)
-    {
-        changePosGameObject = status;
-        hasAlreadyClickedToChangePosition = false;
-    }*/
 
     /// <summary>
     /// Called by button

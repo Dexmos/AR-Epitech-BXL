@@ -10,10 +10,6 @@ public class SpawnSettingsMenu : MonoBehaviour
     [Header("Main Buttons")]
     [SerializeField]
     public GameObject AdjustHoopButton = default;
-    [SerializeField]
-    public GameObject ChangeHoopButton = default;
-    [SerializeField]
-    public GameObject ChangeBallButton = default;
 
     [Header("Adjust Hoop Buttons")]
     [SerializeField]
@@ -39,7 +35,6 @@ public class SpawnSettingsMenu : MonoBehaviour
     /// </summary>
     public void OnClickSettingsButton()
     {
-        MainText.text = currentAdjustButtonsStatus.ToString();
         if (!currentMainButtonsStatus)
         {
             GameManagerScript.SetLaunchGameButtonStatus(false);
@@ -74,8 +69,6 @@ public class SpawnSettingsMenu : MonoBehaviour
     public void ManageButtons(bool status)
     {
         AdjustHoopButton.SetActive(status);
-        ChangeHoopButton.SetActive(status);
-        ChangeBallButton.SetActive(status);
         currentMainButtonsStatus = status;
     }
 

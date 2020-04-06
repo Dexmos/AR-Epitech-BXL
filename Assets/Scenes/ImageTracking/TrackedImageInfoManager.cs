@@ -87,7 +87,7 @@ public class TrackedImageInfoManager : MonoBehaviour
     {
         if (trackedImage.referenceImage.name.Equals("Charizard_EX"))
         {
-            MainText.text = "Charizard Found";
+            MainText.text = "Charizard-EX Found\nYou Can set up the game";
             if (!gameAlreadySetUp)
             {
                 canSetGame = true;
@@ -98,7 +98,7 @@ public class TrackedImageInfoManager : MonoBehaviour
             TempText.gameObject.SetActive(true);
             launchTempText = true;
             time = 0.0f;
-            TempText.text = "Nah it's Jayce !";
+            TempText.text = "Nah it's Jayce form Magic !";
         }
     }
 

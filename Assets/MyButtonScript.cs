@@ -18,8 +18,6 @@ public class MyButtonScript : Button
     {
         base.OnPointerUp(eventData);
         Debug.Log("Up");
-        MainText.text = "Set LaunchGameButton to true";
-        //GameManagerScript.SetLaunchGameButtonStatus(true);
         GameManagerScript.StartGame();
     }
 

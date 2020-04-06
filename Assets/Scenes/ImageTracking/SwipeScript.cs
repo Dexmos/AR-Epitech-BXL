@@ -7,7 +7,7 @@ using UnityEngine.XR.ARSubsystems;
 
 public class SwipeScript : MonoBehaviour {
 
-	Vector2 startPos, endPos, direction; // touch start position, touch end position, swipe direction
+	//Vector2 startPos, endPos, direction; // touch start position, touch end position, swipe direction
 	float touchTimeStart, touchTimeFinish, timeInterval; // to calculate swipe time to sontrol throw force in Z direction
 
 	[SerializeField]
@@ -28,6 +28,12 @@ public class SwipeScript : MonoBehaviour {
 	private Vector3 endRayPos = default;
 	private Vector3 velocity = default;
 	private Vector2 touchPosition = default;
+	private Vector3 targetPos = default;
+	private float objectHit = default;
+	private Vector3 direction = default;
+	public Color c1 = Color.yellow;
+	public Color c2 = Color.red;
+	private LineRenderer lineRenderer = default;
 
 	static List<ARRaycastHit> s_Hits = new List<ARRaycastHit>();
 
@@ -37,7 +43,9 @@ public class SwipeScript : MonoBehaviour {
 
 	private void Start()
 	{
-		rb = GetComponent<Rigidbody> ();
+		lineRenderer = GetComponent<LineRenderer>();
+		rb = GetComponent<Rigidbody>();
+		rb.freezeRotation = false;
 	}
 
 	bool TryGetTouchPosition()
@@ -61,92 +69,63 @@ public class SwipeScript : MonoBehaviour {
 		return false;
 	}
 
-	void Update () 
+	private void Update()
 	{
-		if (!TryGetTouchPosition())
-			return;
+		direction = transform.forward * 10.0f;
+		lineRenderer.SetPosition(0, transform.position);
+		lineRenderer.SetPosition(1, direction);
+	}
 
-		if (ARRaycastManagerScript.Raycast(touchPosition, s_Hits, TrackableType.PlaneWithinPolygon))
-		{
-			// Raycast hits are sorted by distance, so the first one
-			// will be the closest hit.
-			var hitPose = s_Hits[0].pose;
-
-			endRayPos = hitPose.position;
-			MainText.text = "Throw Ball " + endRayPos.ToString();
-		}
-
+	private void FixedUpdate()
+	{
 		if (canThrowBall)
 		{
-			// if you touch the screen
-			/*if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-			{
-
-				// getting touch position and marking time when you touch the screen
-				//touchTimeStart = Time.time;
-				//startPos = Input.GetTouch(0).position;
-
-				if (!TryGetTouchPosition())
-					return;
-
-				if (ARRaycastManagerScript.Raycast(touchPosition, s_Hits, TrackableType.PlaneWithinPolygon))
-				{
-					// Raycast hits are sorted by distance, so the first one
-					// will be the closest hit.
-					var hitPose = s_Hits[0].pose;
-
-					startRayPos = hitPose.position;
-					MainText.text = "Throw Ball " + startRayPos;
-				}
-			}*/
-
-			// if you release your finger
-			if (Input.touchCount > 0 && (Input.GetTouch(0).phase == TouchPhase.Ended))
-			{
-				MainText.text = "Throw Ball";
-
-				/*if (cameraForward != null)
-				{
-					cameraForward = mainCamera.transform.forward;
-				}*/
-				// marking time when you release it
-				//touchTimeFinish = Time.time;
-
-				// calculate swipe time interval 
-				//timeInterval = touchTimeFinish - touchTimeStart;
-
-				// getting release finger position
-				//endPos = Input.GetTouch(0).position;
-
-				// calculating swipe direction in 2D space
-				//direction = startPos - endPos;
-
-				velocity = startRayPos - endRayPos;
-				//rb.velocity = velocity;
-				endRayPos = new Vector3(endRayPos.x, endRayPos.y + 2.0f, endRayPos.z);
-				//rb.AddForce(endRayPos * -2.5f);
-
-				// add force to balls rigidbody in 3D space depending on swipe time, direction and throw forces
-				rb.isKinematic = false;
-				/*rb.AddForce((-direction.x * throwForceInXandY) + cameraForward.x, 
-					(-direction.y * throwForceInXandY) + cameraForward.y, 
-					(throwForceInZ / timeInterval) + cameraForward.z);*/
-
-				/*rb.AddForce((-direction.x * throwForceInXandY),
-						(-direction.y * throwForceInXandY),
-						(throwForceInZ / timeInterval));*/
-
-				//Destroy(gameObject, 3f);
-
-			}
+			rb.AddForce(direction);
 		}
-			
+	}
+
+	public void Fire(GameObject target)
+	{
+		// Doesn't work idk why..
+		targetPos = target.transform.position;
+		transform.LookAt(targetPos);
+		// _____
+
+		startBallPos = transform.position;
+		direction = transform.forward * 10.0f;
+		SetLineRenderer();
+
+		//MainText.text = "Rotate to " + targetPos.ToString("F2");
+		rb.isKinematic = false;
+		canThrowBall = true;
+		MainText.text = "Fire !";
+		//oui
+		//Invoke("ReturnBallToOriginPos", 2.0f);
+	}
+
+	private void ReturnBallToOriginPos()
+	{
+		transform.position = startBallPos;
+	}
+
+	public void SetLineRenderer()
+	{
+		lineRenderer.positionCount = 2;
+		float alpha = 1.0f;
+		Gradient gradient = new Gradient();
+		gradient.SetKeys(
+			new GradientColorKey[] { new GradientColorKey(c1, 0.0f), new GradientColorKey(c2, 1.0f) },
+			new GradientAlphaKey[] { new GradientAlphaKey(alpha, 0.0f), new GradientAlphaKey(alpha, 1.0f) }
+		);
+		//lineRenderer.widthMultiplier = 0.05f;
+		lineRenderer.colorGradient = gradient;
+		lineRenderer.SetPosition(0, transform.position);
+		lineRenderer.SetPosition(1, transform.forward * 10f);
 	}
 
 	public void SetCamera(Camera newCamera)
 	{
 		mainCamera = newCamera;
-		startBallPos = transform.position;
 	}
 
 	public void SetText(TextMeshProUGUI text)
@@ -159,7 +138,7 @@ public class SwipeScript : MonoBehaviour {
 		ARRaycastManagerScript = manager;
 	}
 
-	public void ThrowBall(bool status)
+	public void CanTrowBall(bool status)
 	{
 		canThrowBall = status;
 	}

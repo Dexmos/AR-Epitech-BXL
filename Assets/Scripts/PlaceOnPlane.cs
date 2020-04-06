@@ -24,6 +24,8 @@ public class PlaceOnPlane : MonoBehaviour
     public TrackedImageInfoManager ImageTrackerManager = default;
     [SerializeField]
     public GameManager GameManagerScript = default;
+    [SerializeField]
+    public TextMeshProUGUI MainText = default;
 
     [SerializeField]
     public Button SettingsButton = default;
@@ -96,6 +98,7 @@ public class PlaceOnPlane : MonoBehaviour
             spawnedObject = Instantiate(m_PlacedPrefab, hitPose.position, hitPose.rotation);
             spawnedObject.transform.localScale = new Vector3(2.5f, 2.5f, 2.5f);
             spawnedObject.transform.localEulerAngles = new Vector3(-90.0f, 0.0f, 0.0f);
+            spawnedObject.GetComponent<CollideLugia>().SetMainText(MainText);
             SettingsButton.gameObject.SetActive(true);
             ImageTrackerManager.ChangeSetUpGame(false);
             //GameManagerScript.SetLaunchGameButtonStatus(true);
