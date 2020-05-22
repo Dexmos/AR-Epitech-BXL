@@ -101,7 +101,6 @@ public class PlaceOnPlane : MonoBehaviour
             spawnedObject.GetComponent<CollideLugia>().SetMainText(MainText);
             SettingsButton.gameObject.SetActive(true);
             ImageTrackerManager.ChangeSetUpGame(false);
-            //GameManagerScript.SetLaunchGameButtonStatus(true);
             GameManagerScript.SetPlaceBall();
         }
         else

@@ -6,9 +6,6 @@ using TMPro;
 
 public class PinchManager : MonoBehaviour
 {
-    public float zoomOutMin = 1;
-    public float zoomOutMax = 8;
-
     [SerializeField]
     public PlaceOnPlane PlaceOnPlaneScript = default;
     

@@ -104,7 +104,6 @@ public class PlaceBallOnPlane : MonoBehaviour
             GameManagerScript.SetBallPlacedOnPlan(spawnedObject);
             canPlaceBall = false;
             canStartPlaceBall = false;
-            //GameManagerScript.SetLaunchGameButtonStatus(true);
         }
         else
         {

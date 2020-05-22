@@ -8,15 +8,7 @@ using UnityEngine.XR.ARFoundation;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    public ARSessionOrigin ARSessionOriginScript = default;
-    [SerializeField]
-    public ARPlaneManager ARPlaneManagerScript = default;
-    [SerializeField]
-    public ARRaycastManager ARRaycastManagerScript = default;
-    [SerializeField]
     public PlaceBallOnPlane PlaceBallOnPlaneScript = default;
-    [SerializeField]
-    public PlaceOnPlane PlaceOnPlaneScript = default;
 
     [SerializeField]
     public TextMeshProUGUI MainText = default;
@@ -28,12 +20,6 @@ public class GameManager : MonoBehaviour
     public Button FIREButton = default;
     [SerializeField]
     public Slider RotateBallSliderZ = default;
-    
-    [SerializeField]
-    public GameObject BallPrefab = default;
-    [SerializeField]
-    public Camera MainCamera = default;
-    public Vector3 PositionToInstantiateBalls = Vector3.zero;
 
     private GameObject currentBall = default;
     private GameObject target = default;
@@ -58,7 +44,7 @@ public class GameManager : MonoBehaviour
     public void FireTheball()
     {
         target = PlaceBallOnPlaneScript.GetSpawedObject();
-        currentBall.GetComponent<SwipeScript>().Fire(target);
+        currentBall.GetComponent<Bullet>().Fire(target);
         FIREButton.interactable = false;
         RotateBallSliderZ.gameObject.SetActive(false);
     }
@@ -67,7 +53,7 @@ public class GameManager : MonoBehaviour
     {
         FIREButton.interactable = true;
         RotateBallSliderZ.gameObject.SetActive(true);
-        currentBall.GetComponent<SwipeScript>().CanTrowBall(false);
+        currentBall.GetComponent<Bullet>().CanTrowBall(false);
     }
 
     public void SetPlaceBall()
@@ -87,13 +73,13 @@ public class GameManager : MonoBehaviour
         newRotation.z = (currentBall.transform.localRotation.z);
         currentBall.transform.localEulerAngles = new Vector3(newRotation.x, newRotation.y, newRotation.z);
 
-        currentBall.GetComponent<SwipeScript>().SetLineRenderer();
+        currentBall.GetComponent<Bullet>().SetLineRenderer();
     }
 
     public void SetBallPlacedOnPlan(GameObject ball)
     {
         currentBall = ball;
-        currentBall.GetComponent<SwipeScript>().SetText(MainText);
+        currentBall.GetComponent<Bullet>().SetText(MainText);
 
         SetLaunchGameButtonStatus(true);
         LaunchGameMyButtonScript.SetTMProtext(MainText);
