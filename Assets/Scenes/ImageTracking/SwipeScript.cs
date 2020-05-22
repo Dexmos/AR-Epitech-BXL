@@ -6,30 +6,11 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
 public class SwipeScript : MonoBehaviour {
-
-	//Vector2 startPos, endPos, direction; // touch start position, touch end position, swipe direction
-	float touchTimeStart, touchTimeFinish, timeInterval; // to calculate swipe time to sontrol throw force in Z direction
-
-	[SerializeField]
-	float throwForceInXandY = 1f; // to control throw force in X and Y directions
-
-	[SerializeField]
-	float throwForceInZ = 50f; // to control throw force in Z direction
-
-	private Camera mainCamera = default;
-	private Vector3 cameraForward = default;
-
-	private ARRaycastManager ARRaycastManagerScript = default;
 	private TextMeshProUGUI MainText = default;
 	private bool canThrowBall = false;
 	private Vector3 startBallPos;
 
-	private Vector3 startRayPos = default;
-	private Vector3 endRayPos = default;
-	private Vector3 velocity = default;
-	private Vector2 touchPosition = default;
 	private Vector3 targetPos = default;
-	private float objectHit = default;
 	private Vector3 direction = default;
 	public Color c1 = Color.yellow;
 	public Color c2 = Color.red;
@@ -54,18 +35,14 @@ public class SwipeScript : MonoBehaviour {
 		if (Input.GetMouseButton(0))
 		{
 			var mousePosition = Input.mousePosition;
-			touchPosition = new Vector2(mousePosition.x, mousePosition.y);
 			return true;
 		}
 #else
         if (Input.touchCount > 0)
         {
-            startRayPos = Input.GetTouch(0).position;
             return true;
         }
 #endif
-
-		touchPosition = default;
 		return false;
 	}
 
@@ -123,19 +100,9 @@ public class SwipeScript : MonoBehaviour {
 		lineRenderer.SetPosition(1, transform.forward * 10f);
 	}
 
-	public void SetCamera(Camera newCamera)
-	{
-		mainCamera = newCamera;
-	}
-
 	public void SetText(TextMeshProUGUI text)
 	{
 		MainText = text;
-	}
-
-	public void SetARRaycastManager(ARRaycastManager manager)
-	{
-		ARRaycastManagerScript = manager;
 	}
 
 	public void CanTrowBall(bool status)

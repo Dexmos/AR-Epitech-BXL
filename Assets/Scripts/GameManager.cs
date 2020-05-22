@@ -25,8 +25,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public MyButtonScript LaunchGameMyButtonScript = default;
     [SerializeField]
-    public Canvas MainCanvas = default;
-    [SerializeField]
     public Button FIREButton = default;
     [SerializeField]
     public Slider RotateBallSliderZ = default;
@@ -63,7 +61,6 @@ public class GameManager : MonoBehaviour
         currentBall.GetComponent<SwipeScript>().Fire(target);
         FIREButton.interactable = false;
         RotateBallSliderZ.gameObject.SetActive(false);
-        //Invoke("MakeFireButtonInteractable", 2.0f);
     }
 
     private void MakeFireButtonInteractable()
@@ -89,7 +86,6 @@ public class GameManager : MonoBehaviour
         newRotation.y = (currentBall.transform.localRotation.y + RotateBallSliderZ.value);
         newRotation.z = (currentBall.transform.localRotation.z);
         currentBall.transform.localEulerAngles = new Vector3(newRotation.x, newRotation.y, newRotation.z);
-        //currentBall.transform.Rotate(new Vector3(newRotation.x, newRotation.y, newRotation.z), Space.Self);
 
         currentBall.GetComponent<SwipeScript>().SetLineRenderer();
     }
@@ -97,9 +93,7 @@ public class GameManager : MonoBehaviour
     public void SetBallPlacedOnPlan(GameObject ball)
     {
         currentBall = ball;
-        currentBall.GetComponent<SwipeScript>().SetCamera(MainCamera);
         currentBall.GetComponent<SwipeScript>().SetText(MainText);
-        currentBall.GetComponent<SwipeScript>().SetARRaycastManager(ARRaycastManagerScript);
 
         SetLaunchGameButtonStatus(true);
         LaunchGameMyButtonScript.SetTMProtext(MainText);
